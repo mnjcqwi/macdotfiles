@@ -2,4 +2,4 @@
 
 This is bare git repository 
 
-I am using [https://www.atlassian.com/git/tutorials/dotfiles](this solution) to manage my dotfiles
+I am using [this solution](https://www.atlassian.com/git/tutorials/dotfiles) to manage my dotfiles
