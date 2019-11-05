@@ -93,6 +93,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'itchyny/vim-cursorword'
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
 Plug 'plasticboy/vim-markdown'
+Plug 'airblade/vim-gitgutter'
 call plug#end()
 
 " color scheme
@@ -101,6 +102,8 @@ color dracula
 " vim-airline config
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:airline_theme='dracula'
+"show full path in the vim-airline
+" let g:airline_section_c = '%F'
 let g:airline#extensions#tabline#enabled = 1 "Show tabs if only one is enabled.
 let g:airline#extensions#tabline#show_splits = 1 "enable/disable displaying open splits per tab (only when tabs are opened). >
 let g:airline#extensions#tabline#show_buffers = 1 " enable/disable displaying buffers with a single tab
@@ -253,6 +256,10 @@ inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm() : "\<C-g>u\<CR
 " Close the preview window when completion is done.
 autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 
+"gitgutter config
+let g:gitgutter_override_sign_column_highlight = 1
+highlight SignColumn guibg=bg
+highlight SignColumn ctermbg=bg
 " coc-list config
 """"""""""""
 "autocmd CursorHold * exe printf('match IncSearch /\V\<%s\>/', escape(expand('<cword>'), '/\'))
