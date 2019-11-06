@@ -1,50 +1,106 @@
-set nocompatible
-let mapleader=' '
-let g:python3_host_prog = '/usr/local/bin/python3'
-set completeopt=longest,menuone,preview
-set wildmenu
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"						 Plugins                                 "
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+call plug#begin('~/.config/nvim/plugged')
+Plug 'mhinz/vim-startify'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'Yggdroot/indentLine'
+Plug 'dracula/vim', { 'as': 'dracula' }
+Plug 'scrooloose/nerdtree'
+Plug 'brooth/far.vim'
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+Plug 'AndrewRadev/splitjoin.vim'
+Plug 'majutsushi/tagbar'
+Plug 'lfv89/vim-interestingwords'
+Plug 'ryanoasis/vim-devicons'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-surround'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
+" Plug 'itchyny/vim-cursorword' do some practice, may useful in the future
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
+Plug 'plasticboy/vim-markdown'
+Plug 'airblade/vim-gitgutter'
+call plug#end()
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"						 Setting                                 "
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+set nocompatible  								    		" Enables us Vim specific features
+set completeopt=longest,menuone,preview 					" completeopt setting 
+set wildmenu                                                " example use case, :find [paths] click tab, it will show all the files under that paths
 set wildmode=longest:full,full
-" Use absolute paths in sessions
-set sessionoptions-=curdir
-
-" if hidden is not set, TextEdit might fail.
-set hidden
-" Some servers have issues with backup files, see #649
-set nobackup
-set nowritebackup
-" Better display for messages
-set cmdheight=2
-" You will have bad experience for diagnostic messages when it's default 4000.
-set updatetime=300
-" don't give |ins-completion-menu| messages.
-set shortmess+=c
-" always show signcolumns
-set signcolumn=yes
-set nu
-set cursorline
-set hlsearch
- " 从鼠标右键复制过来的内容在插入模式下粘贴不会出现乱行问题
-set paste 
-set laststatus=2 " 总是显示状态栏"
-set ruler " 显示当前光标"
-filetype plugin indent on
-" tab 缩进
-set tabstop=4 " 设置Tab长度为4空格
-set shiftwidth=4 " 设置自动缩进长度为4空格
-
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Backup
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-set autowrite
+set hidden 										          " Buffer should still exist if window is closed 
+" disable some annoying backup features
+set nobackup 										      " Don't create annoying backup files
 set noswapfile
-" Some servers have issues with backup files
-set nobackup
 set nowritebackup
+
 set undofile
 set undodir=~/.vim_undo
 set undolevels=1000
 set undoreload=10000
 set history=10000
+" Use absolute paths in sessions
+" set sessionoptions-=curdir  not useful at this time
+filetype off                    " Reset filetype detection first ...
+filetype plugin indent on       " ... and enable filetype detection
+set autoindent					" Enabile Autoindent
+
+" Better display for messages
+set cmdheight=2
+" You will have bad experience for diagnostic messages when it's default 4000.
+set updatetime=100
+" don't give |ins-completion-menu| messages.
+set shortmess+=c
+" always show signcolumns
+set signcolumn=yes
+set encoding=utf-8              " Set default encoding to UTF-8
+set autoread                    " Automatically read changed files
+set backspace=indent,eol,start  " Makes backspace key more powerful. :h 'backspace' for help
+set nu
+set cursorline
+set incsearch                   " Shows the match while typing
+set hlsearch
+set laststatus=2 " 总是显示状态栏"
+set noerrorbells                " No beeps
+set ruler " 显示当前光标"
+set showcmd                     " Show me what I'm typing
+set splitright                  " Vertical windows should be split to right
+set splitbelow                  " Horizontal windows should split to bottom
+set noshowmode                  " We show the mode with airline or lightline
+set ignorecase                  " Search case insensitive...
+set smartcase                   " ... but not it begins with upper case
+" tab 缩进
+set tabstop=4 " 设置Tab长度为4空格
+set shiftwidth=4 " 设置自动缩进长度为4空格
+set nocursorcolumn              " Do not highlight column (speeds up highlighting)
+set nocursorline                " Do not highlight cursor (speeds up highlighting)
+set lazyredraw                  " Wait to redraw
+
+" Enable to copy to clipboard for operations like yank, delete, change and put
+" http://stackoverflow.com/questions/20186975/vim-mac-how-to-copy-to-clipboard-without-pbcopy
+if has('unnamedplus')
+  set clipboard^=unnamed
+  set clipboard^=unnamedplus
+endif
+
+" true color enable in neovim
+if (has("termguicolors"))
+  set termguicolors
+endif
+
+" color scheme
+color dracula
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Mappings 
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let mapleader=' '
+let g:python3_host_prog = '/usr/local/bin/python3'
+
 " remap window move
 noremap <C-h> <C-w>h
 noremap <C-j> <C-w>j
@@ -67,37 +123,24 @@ nnoremap <silent> ]b :bprevious<CR>
 nnoremap <silent> [B :bprevious<CR>
 nnoremap <silent> [B :bprevious<CR>
 
-" true color enable in neovim
-if (has("termguicolors"))
-  set termguicolors
-endif
+" Jump to next error with Ctrl-n and previous error with Ctrl-m. Close the
+" quickfix window with <leader>a
+map <C-n> :cnext<CR>
+map <C-m> :cprevious<CR>
+nnoremap <leader>a :cclose<CR>
 
-call plug#begin('~/.config/nvim/plugged')
-Plug 'mhinz/vim-startify'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-Plug 'Yggdroot/indentLine'
-Plug 'dracula/vim', { 'as': 'dracula' }
-Plug 'scrooloose/nerdtree'
-Plug 'brooth/far.vim'
-Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
-Plug 'AndrewRadev/splitjoin.vim'
-Plug 'majutsushi/tagbar'
-Plug 'lfv89/vim-interestingwords'
-Plug 'ryanoasis/vim-devicons'
-Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-surround'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
-Plug 'itchyny/vim-cursorword'
-Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
-Plug 'plasticboy/vim-markdown'
-Plug 'airblade/vim-gitgutter'
-call plug#end()
+" Search mappings: These will make it so that going to the next one in a
+" search will center on the line it's found in.
+nnoremap n nzzzv
+nnoremap N Nzzzv
 
-" color scheme
-color dracula
+" Visual linewise up and down by default (and use gj gk to go quicker)
+noremap <Up> gk
+noremap <Down> gj
+noremap j gj
+noremap k gk
+" Enter automatically into the files directory
+autocmd BufEnter * silent! lcd %:p:h
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " vim-airline config
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -140,7 +183,7 @@ function! NERDTreeHighlightFile(extension, fg, bg, guifg, guibg)
  exec 'autocmd filetype nerdtree syn match ' . a:extension .' #^\s\+.*'. a:extension .'$#'
 endfunction
 
-call NERDTreeHighlightFile('ini', 'yellow', 'none', 'yellow', '#151515')
+"call NERDTreeHighlightFile('ini', 'yellow', 'none', 'yellow', '#151515')
 call NERDTreeHighlightFile('md', 'blue', 'none', '#3366FF', '#151515')
 call NERDTreeHighlightFile('yml', 'yellow', 'none', 'yellow', '#151515')
 call NERDTreeHighlightFile('config', 'yellow', 'none', 'yellow', '#151515')
@@ -161,34 +204,38 @@ set regexpengine=1
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " tagbar config
-nnoremap <leader>t :TagbarToggle<CR>
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+nnoremap <leader>t :TagbarToggle<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" vim-go personal config
-" """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" vim-go config
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " all errors put into quickfix
 let g:go_list_type = "quickfix"
+let g:go_autodetect_gopath = 1
 let g:go_fmt_command = "goimports"
+
 let g:go_highlight_types = 1
 let g:go_highlight_fields = 1
+let g:go_highlight_functions = 1
+let g:go_highlight_structs = 1
+let g:go_highlight_operators = 1
+let g:go_highlight_build_constraints = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_function_calls = 1
+let g:go_highlight_extra_types = 1
+let g:go_highlight_generate_tags = 1
+
 let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck']
 let g:go_metalinter_autosave = 1
 let g:go_metalinter_autosave_enabled = ['vet', 'golint']
 let g:go_metalinter_deadline = "5s"
 let g:go_def_mode = 'gopls'
 let g:go_info_mode='gopls'
-" let g:go_version_warning = 1
 let g:go_def_mapping_enabled = 0
 let g:go_doc_keywordprg_enabled = 0
-let g:go_fmt_autosave = 0
-let go_highlight_functions = 1
-let go_highlight_structs = 1
-let go_highlight_operators = 1
-let go_highlight_build_constraints = 1
-let go_highlight_methods = 1
-let go_fmt_fail_silently = 1
+let g:go_fmt_autosave = 1
 
 function! s:build_go_files()
   let l:file = expand('%')
@@ -200,14 +247,48 @@ function! s:build_go_files()
 endfunction
 
 
-" using :A :AS :AV instead of :GoAlternative
-autocmd Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')
-autocmd Filetype go command! -bang AV call go#alternate#Switch(<bang>0, 'vsplit')
-autocmd Filetype go command! -bang AS call go#alternate#Switch(<bang>0, 'split')
+augroup go
+  autocmd!
 
-autocmd FileType go nmap <leader>gr  <Plug>(go-run)
-autocmd FileType go nmap <leader>gb :<C-u>call <SID>build_go_files()<CR>
-autocmd FileType go nmap <leader>gt  <Plug>(go-test)
+  " Show by default 4 spaces for a tab
+  autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4
+
+  " :GoBuild and :GoTestCompile
+  autocmd FileType go nmap <leader>b :<C-u>call <SID>build_go_files()<CR>
+
+  " :GoTest
+  autocmd FileType go nmap <leader>t  <Plug>(go-test)
+
+  " :GoRun
+  autocmd FileType go nmap <leader>r  <Plug>(go-run)
+
+  " :GoDoc
+  autocmd FileType go nmap <Leader>d <Plug>(go-doc)
+
+  " :GoCoverageToggle
+  autocmd FileType go nmap <Leader>c <Plug>(go-coverage-toggle)
+
+  " :GoInfo
+  autocmd FileType go nmap <Leader>i <Plug>(go-info)
+
+  " :GoMetaLinter
+  autocmd FileType go nmap <Leader>l <Plug>(go-metalinter)
+
+  " :GoDef but opens in a vertical split
+  autocmd FileType go nmap <Leader>v <Plug>(go-def-vertical)
+  " :GoDef but opens in a horizontal split
+  autocmd FileType go nmap <Leader>s <Plug>(go-def-split)
+
+  " :GoAlternate  commands :A, :AV, :AS and :AT
+  autocmd Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')
+  autocmd Filetype go command! -bang AV call go#alternate#Switch(<bang>0, 'vsplit')
+  autocmd Filetype go command! -bang AS call go#alternate#Switch(<bang>0, 'split')
+  autocmd Filetype go command! -bang AT call go#alternate#Switch(<bang>0, 'tabe')
+augroup END
+
+" autocmd FileType go nmap <leader>gr  <Plug>(go-run)
+" autocmd FileType go nmap <leader>gb :<C-u>call <SID>build_go_files()<CR>
+" autocmd FileType go nmap <leader>gt  <Plug>(go-test)
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " coc.nvim config
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
