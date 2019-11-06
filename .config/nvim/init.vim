@@ -15,7 +15,7 @@ Plug 'majutsushi/tagbar'
 Plug 'lfv89/vim-interestingwords'
 Plug 'ryanoasis/vim-devicons'
 Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-surround'
+" Plug 'tpope/vim-surround'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
@@ -23,6 +23,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
 Plug 'plasticboy/vim-markdown'
 Plug 'airblade/vim-gitgutter'
+" Plug 'Raimondi/delimitMate'
 call plug#end()
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -141,6 +142,7 @@ noremap j gj
 noremap k gk
 " Enter automatically into the files directory
 autocmd BufEnter * silent! lcd %:p:h
+
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " vim-airline config
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -183,7 +185,7 @@ function! NERDTreeHighlightFile(extension, fg, bg, guifg, guibg)
  exec 'autocmd filetype nerdtree syn match ' . a:extension .' #^\s\+.*'. a:extension .'$#'
 endfunction
 
-"call NERDTreeHighlightFile('ini', 'yellow', 'none', 'yellow', '#151515')
+call NERDTreeHighlightFile('ini', 'yellow', 'none', 'yellow', '#151515')
 call NERDTreeHighlightFile('md', 'blue', 'none', '#3366FF', '#151515')
 call NERDTreeHighlightFile('yml', 'yellow', 'none', 'yellow', '#151515')
 call NERDTreeHighlightFile('config', 'yellow', 'none', 'yellow', '#151515')
@@ -346,3 +348,8 @@ highlight SignColumn ctermbg=bg
 "autocmd CursorHold * exe printf('match IncSearch /\V\<%s\>/', escape(expand('<cword>'), '/\'))
 
  """"""""""""""""""""""""""""""""""""""
+
+ """""""""""""""""""""""""""""""""
+ "            delimitMate        "
+ """""""""""""""""""""""""""""""""
+ let b:delimitMate_matchpairs = "{:}"
