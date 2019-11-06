@@ -102,11 +102,21 @@ color dracula
 let mapleader=' '
 let g:python3_host_prog = '/usr/local/bin/python3'
 
-" remap window move
+" nomal mode move window
 noremap <C-h> <C-w>h
 noremap <C-j> <C-w>j
 noremap <C-l> <C-w>l
 noremap <C-k> <C-w>k
+
+" insert mode and command mode move cursor
+inoremap <C-h> <Left>
+inoremap <C-j> <Down>
+inoremap <C-k> <Up>
+inoremap <C-l> <Right>
+cnoremap <C-h> <Left>
+cnoremap <C-j> <Down>
+cnoremap <C-k> <Up>
+cnoremap <C-l> <Right>
 
 " reset hightlight use esc
 nnoremap <esc> :noh<return><esc>
