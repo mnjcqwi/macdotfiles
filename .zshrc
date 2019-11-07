@@ -1,4 +1,6 @@
 # Path to your oh-my-zsh installation.
+ENHANCD_FILTER=fzy:fzf:peco
+export ENHANCD_FILTER
 export ZSH=$HOME/.oh-my-zsh
 export GOPATH=$HOME/go
 export GO111MODULE=auto
@@ -138,6 +140,13 @@ function code {
 [[ -s `brew --prefix`/etc/autojump.sh  ]] && . `brew --prefix`/etc/autojump.sh
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
+j() {
+    if [[ "$#" -ne 0 ]]; then
+        cd $(autojump $@)
+        return
+    fi
+    cd "$(autojump -s | sort -k1gr | awk '$1 ~ /[0-9]:/ && $2 ~ /^\// { for (i=2; i<=NF; i++) { print $(i) } }' |  fzf --height 40% --reverse --inline-info)" 
+}
 
 # install zplug, plugin manager for zsh, https://github.com/zplug/zplug
 # curl -sL --proto-redir -all,https https://raw.githubusercontent.com/zplug/installer/master/installer.zsh | zsh
@@ -167,6 +176,7 @@ zplug 'zsh-users/zsh-completions', defer:2
 zplug 'zsh-users/zsh-history-substring-search'
 zplug 'zsh-users/zsh-syntax-highlighting', defer:2
 zplug "zdharma/zsh-diff-so-fancy", as:command, use:bin/git-dsf
+zplug "b4b4r07/enhancd", use:init.sh
 
 if ! zplug check; then
   zplug install
