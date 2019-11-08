@@ -249,6 +249,9 @@ let g:go_def_mapping_enabled = 0
 let g:go_doc_keywordprg_enabled = 0
 let g:go_fmt_autosave = 1
 
+let g:go_highlight_debug = 1
+
+
 function! s:build_go_files()
   let l:file = expand('%')
   if l:file =~# '^\f\+_test\.go$'
