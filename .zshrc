@@ -3,7 +3,7 @@ ENHANCD_FILTER=fzy:fzf:peco
 export ENHANCD_FILTER
 export ZSH=$HOME/.oh-my-zsh
 export GOPATH=$HOME/go
-export GO111MODULE=auto
+export GO111MODULE=on
 export GOBIN=$GOPATH/bin
 export PATH=$PATH:$GOBIN
 
