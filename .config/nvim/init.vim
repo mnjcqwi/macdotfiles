@@ -23,6 +23,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
 Plug 'plasticboy/vim-markdown'
 Plug 'airblade/vim-gitgutter'
+Plug 'liuchengxu/vim-clap'
 " Plug 'Raimondi/delimitMate'
 call plug#end()
 
@@ -39,7 +40,7 @@ set hidden 										          " Buffer should still exist if window is closed
 set nobackup 										      " Don't create annoying backup files
 set noswapfile
 set nowritebackup
-
+set scrolloff=6
 set undofile
 set undodir=~/.vim_undo
 set undolevels=1000
@@ -180,7 +181,10 @@ let g:airline#extensions#coc#stl_format_warn = '%W{[%w(#%fw)]}'
 " """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 nmap <leader>nv :NERDTreeFind<cr>
 nmap <leader>ng :NERDTreeToggle<cr>
+nmap <leader>nf :NERDTreeFind<cr>
+
 let NERDTreeShowHidden=1
+let NERDTreeChDirMode=2
 let NERDTreeAutoDeleteBuffer = 1
 let NERDTreeDirArrows = 1
 let NERDTreeShowLineNumbers=1
@@ -275,6 +279,10 @@ let g:go_info_mode='gopls'
 let g:go_def_mapping_enabled = 0
 let g:go_doc_keywordprg_enabled = 0
 let g:go_fmt_autosave = 1
+let g:go_auto_type_info = 1
+" let g:go_auto_sameids = 1
+
+"let g:go_list_autoclose = 0
 
 let g:go_highlight_debug = 1
 
@@ -392,7 +400,7 @@ highlight SignColumn ctermbg=bg
  """""""""""""""""""""""""""""""""
  "            delimitMate        "
  """""""""""""""""""""""""""""""""
- let b:delimitMate_matchpairs = "{:}"
+ "let b:delimitMate_matchpairs = "{:}"
 
  """"""""""""""""""""""""""""""""""""""""""""""""
  " FZF config
@@ -416,3 +424,55 @@ let g:fzf_colors =
   \ 'marker':  ['fg', 'Keyword'],
   \ 'spinner': ['fg', 'Label'],
   \ 'header':  ['fg', 'Comment'] }
+
+highlight NormalFloat cterm=NONE ctermfg=14 ctermbg=0 gui=NONE guifg=#93a1a1 guibg=#002931
+
+let $FZF_DEFAULT_OPTS='--layout=reverse'
+let g:fzf_layout = { 'window': 'call FloatingFZF()' }
+
+function! FloatingFZF()
+  let buf = nvim_create_buf(v:false, v:true)
+  call setbufvar(buf, 'number', 'no')
+  call setbufvar(buf, 'signcolumn', 'no')
+
+  let height = float2nr(&lines/2)
+  let width = &columns
+  let row = &lines
+  let col = &columns
+
+  let opts = {
+        \ 'relative': 'editor',
+        \ 'row': row,
+        \ 'col': col,
+        \ 'width': width,
+        \ 'height':height,
+        \ }
+  let win =  nvim_open_win(buf, v:true, opts)
+  call setwinvar(win, '&number', 0)
+  call setwinvar(win, '&relativenumber', 0)
+endfunction
+
+command! -bang -nargs=* Rg
+  \ call fzf#vim#grep(
+  \   'rg --column --line-number --no-heading --color=always --smart-case '.shellescape(<q-args>), 1,
+  \   <bang>0 ? fzf#vim#with_preview('up:60%')
+  \           : fzf#vim#with_preview('right:50%:hidden', '?'),
+  \   <bang>0)
+" function! FloatingFZF()
+"   let buf = nvim_create_buf(v:false, v:true)
+"   call setbufvar(buf, '&signcolumn', 'no')
+
+"   let height = &lines - 3
+"   let width = float2nr(&columns - (&columns * 2 / 10))
+"   let col = float2nr((&columns - width) / 2)
+
+"   let opts = {
+"         \ 'relative': 'editor',
+"         \ 'row': 1,
+"         \ 'col': col,
+"         \ 'width': width,
+"         \ 'height': height
+"         \ }
+
+"   call nvim_open_win(buf, v:true, opts)
+" endfunction
