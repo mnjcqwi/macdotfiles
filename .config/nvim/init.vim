@@ -24,13 +24,14 @@ Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() } }
 Plug 'plasticboy/vim-markdown'
 Plug 'airblade/vim-gitgutter'
 Plug 'liuchengxu/vim-clap'
+Plug 'tmux-plugins/vim-tmux-focus-events'
+Plug 'roxma/vim-tmux-clipboard'
 " Plug 'Raimondi/delimitMate'
 call plug#end()
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "						 Setting                                 "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
 set nocompatible  								    		" Enables us Vim specific features
 set completeopt=longest,menuone,preview 					" completeopt setting 
 set wildmenu                                                " example use case, :find [paths] click tab, it will show all the files under that paths
@@ -58,6 +59,12 @@ set cmdheight=2
 set updatetime=100
 " don't give |ins-completion-menu| messages.
 set shortmess+=c
+"  folding solution pick anyone good for this time
+" set foldmethod=indent
+" set foldlevel=1
+" set foldclose=all
+" folding all the functions
+set foldmethod=syntax
 " always show signcolumns
 set signcolumn=yes
 set encoding=utf-8              " Set default encoding to UTF-8
@@ -83,6 +90,7 @@ set nocursorcolumn              " Do not highlight column (speeds up highlightin
 set nocursorline                " Do not highlight cursor (speeds up highlighting)
 set lazyredraw                  " Wait to redraw
 
+set autoread
 " Enable to copy to clipboard for operations like yank, delete, change and put
 " http://stackoverflow.com/questions/20186975/vim-mac-how-to-copy-to-clipboard-without-pbcopy
 if has('unnamedplus')
@@ -131,7 +139,7 @@ augroup end
 
 " remap buffer move keystroke
 nnoremap <silent> [b :bprevious<CR>
-nnoremap <silent> ]b :bprevious<CR>
+nnoremap <silent> ]b :bnext<CR>
 nnoremap <silent> [B :bprevious<CR>
 nnoremap <silent> [B :bprevious<CR>
 
@@ -273,7 +281,7 @@ let g:go_highlight_generate_tags = 1
 let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck']
 let g:go_metalinter_autosave = 1
 let g:go_metalinter_autosave_enabled = ['vet', 'golint']
-let g:go_metalinter_deadline = "5s"
+let g:go_metalinter_deadline = "10s"
 let g:go_def_mode = 'gopls'
 let g:go_info_mode='gopls'
 let g:go_def_mapping_enabled = 0
@@ -281,7 +289,7 @@ let g:go_doc_keywordprg_enabled = 0
 let g:go_fmt_autosave = 1
 let g:go_auto_type_info = 1
 " let g:go_auto_sameids = 1
-
+" let g:go_debug = ['shell-commands']
 "let g:go_list_autoclose = 0
 
 let g:go_highlight_debug = 1
@@ -335,6 +343,7 @@ augroup go
   autocmd Filetype go command! -bang AS call go#alternate#Switch(<bang>0, 'split')
   autocmd Filetype go command! -bang AT call go#alternate#Switch(<bang>0, 'tabe')
 augroup END
+
 
 " autocmd FileType go nmap <leader>gr  <Plug>(go-run)
 " autocmd FileType go nmap <leader>gb :<C-u>call <SID>build_go_files()<CR>
@@ -401,7 +410,15 @@ highlight SignColumn ctermbg=bg
  "            delimitMate        "
  """""""""""""""""""""""""""""""""
  "let b:delimitMate_matchpairs = "{:}"
-
+ """""""""""""""""""""""""""""""""
+ "            vim-startify        "
+ """""""""""""""""""""""""""""""""
+autocmd VimEnter *
+     \   if !argc()
+     \ |   Startify
+     \ |   NERDTree
+     \ |   wincmd w
+     \ | endif
  """"""""""""""""""""""""""""""""""""""""""""""""
  " FZF config
  """""""""""""""""""""""""""""""""""""""""""""""""""

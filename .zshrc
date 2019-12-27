@@ -6,6 +6,7 @@ export GOPATH=$HOME/go
 export GO111MODULE=on
 export GOBIN=$GOPATH/bin
 export PATH=$PATH:$GOBIN
+export GOTRACEBACK=all
 
 
 # Set name of the theme to load.
@@ -183,4 +184,6 @@ if ! zplug check; then
 fi
 
 zplug load
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
 alias config='/usr/bin/git --git-dir=/Users/changshuo/.cfg/ --work-tree=/Users/changshuo'
